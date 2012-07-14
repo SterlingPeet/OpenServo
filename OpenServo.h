@@ -53,19 +53,19 @@
 class OpenServo
 {
   public:
-    OpenServo(Wire wire, int address);
-    void setPosition();
+    OpenServo(int address);
+    void setPosition(int pos);
     unsigned int getPosition();
     void enable();
     void disable();
   private:
-    Wire _wire;
+    //Wire _wire;
     int _address;
-    //byte _reverseSeek;
-    void _OpenServoWrite16(byte reg, int data);
-    unsigned int _OpenServoRead16(byte reg);
-    void _OpenServoCommand8(byte reg);
-    void _OpenServoTransactionInit(byte reg);
+    //uint8_t _reverseSeek;
+    void _OpenServoWrite16(uint8_t reg, int data);
+    unsigned int _OpenServoRead16(uint8_t reg);
+    void _OpenServoCommand8(uint8_t reg);
+    void _OpenServoTransactionInit(uint8_t reg);
 };
 
 #endif

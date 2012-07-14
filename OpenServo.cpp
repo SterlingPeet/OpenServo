@@ -27,17 +27,17 @@
 
 #include "OpenServo.h"
 
-OpenServo::OpenServo(Wire wire, int address)
+OpenServo::OpenServo(int address)
 {
-  _wire = wire;
-  _address = address;
+  //Wire = wire;
+  _address = (uint8_t)address;
 }
 
 /* ================ Public methods ================ */
 
-void OpenServo::setPosition()
+void OpenServo::setPosition(int pos)
 {
-  _OpenServoWrite16(OPENSERVO_SEEK, int data);
+  _OpenServoWrite16(OPENSERVO_SEEK, pos);
 }
 
 
@@ -73,46 +73,46 @@ OpenServo::reverseSeekDisable()
   
 }*/
 
-void OpenServo::_OpenServoWrite16(byte reg, int data)
+void OpenServo::_OpenServoWrite16(uint8_t reg, int data)
 {
   // write a 16 bit register
   _OpenServoTransactionInit(reg);
  
-  OS_WRITE(data >> 8);    //  high byte 
-  OS_WRITE(data & 0xff);  //  low byte
+  OS_WRITE(data >> 8);    //  high uint8_t 
+  OS_WRITE(data & 0xff);  //  low uint8_t
 
-  _wire.endTransmission();
+  Wire.endTransmission();
 }
 
-unsigned int OpenServo::_OpenServoRead16(byte reg)
+unsigned int OpenServo::_OpenServoRead16(uint8_t reg)
 {
   // read a 16 bit register 
   _OpenServoTransactionInit(reg);
  
   unsigned int data;
   
-  _wire.requestFrom(_address, 2);
-  if (_wire.available())
-    data = OS_READ() << 8; // high byte 
-  if (_wire.available())   
-    data |= OS_READ();     //  low byte
+  Wire.requestFrom(_address, 2);
+  if (Wire.available())
+    data = OS_READ() << 8; // high uint8_t 
+  if (Wire.available())   
+    data |= OS_READ();     //  low uint8_t
  
-  _wire.endTransmission();
+  Wire.endTransmission();
  
   return data;
 }
 
-void OpenServo::_OpenServoCommand8(byte reg)
+void OpenServo::_OpenServoCommand8(uint8_t reg)
 {
   // Send an 8 bit servo command
   _OpenServoTransactionInit(reg);
-  _wire.endTransmission();
+  Wire.endTransmission();
 }
 
-void OpenServo::_OpenServoTransactionInit(byte reg)
+void OpenServo::_OpenServoTransactionInit(uint8_t reg)
 {
   // init an i2c transmission
-  _wire.beginTransmission(_address);
+  Wire.beginTransmission(_address);
   OS_WRITE(reg);
 }
 
