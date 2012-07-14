@@ -25,7 +25,7 @@
  *
  */
 
-#include "OpenServo.hpp"
+#include "OpenServo.h"
 
 OpenServo::OpenServo(Wire wire, int address)
 {
